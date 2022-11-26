@@ -46,6 +46,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; TODO automate updating
+;; straight-fetch-all
+;; straight-merge-all
+;; straight-freeze-versions
+;; commit
+
 ;; Configure use-package to use straight.el by default
 (customize-set-variable 'straight-use-package-by-default t)
 
@@ -53,27 +59,15 @@
 ;; USE PACKAGE
 ;; Ref: https://github.com/jwiegley/use-package
 ;; Ref: https://jeffkreeftmeijer.com/emacs-straight-use-package/
-
 (straight-use-package 'use-package)
-
 (require 'use-package)
-
-;; TODO use straight for this
-;; (use-package auto-package-update
-;;   :custom
-;;   (auto-package-update-interval 30)
-;;   (auto-package-update-prompt-before-update t)
-;;   (auto-package-update-hide-results t)
-;;   :config
-;;   (auto-package-update-maybe)
-;;   (auto-package-update-at-time "09:00"))
 
 ;; --------------------------------------------------
 ;; NO-LITTERING
 
 ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
 ;; reliably, set `user-emacs-directory` before loading no-littering!
-;(setq user-emacs-directory "~/.cache/emacs")
+					;(setq user-emacs-directory "~/.cache/emacs")
 
 (use-package no-littering)
 
