@@ -31,34 +31,46 @@
 (customize-set-variable 'warning-minimum-level :error)
 
 ;; --------------------------------------------------
+;; STRAIGHT
+;; Ref: https://github.com/radian-software/straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; Configure use-package to use straight.el by default
+(customize-set-variable 'straight-use-package-by-default t)
+
+;; --------------------------------------------------
 ;; USE PACKAGE
-;; Initialize package sources
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org"   . "https://orgmode.org/elpa/")
-                         ("elpa"  . "https://elpa.gnu.org/packages/")))
+;; Ref: https://github.com/jwiegley/use-package
+;; Ref: https://jeffkreeftmeijer.com/emacs-straight-use-package/
 
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+(straight-use-package 'use-package)
 
 (require 'use-package)
 
-(use-package auto-package-update
-  :custom
-  (auto-package-update-interval 30)
-  (auto-package-update-prompt-before-update t)
-  (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe)
-  (auto-package-update-at-time "09:00"))
+;; TODO use straight for this
+;; (use-package auto-package-update
+;;   :custom
+;;   (auto-package-update-interval 30)
+;;   (auto-package-update-prompt-before-update t)
+;;   (auto-package-update-hide-results t)
+;;   :config
+;;   (auto-package-update-maybe)
+;;   (auto-package-update-at-time "09:00"))
 
 ;; --------------------------------------------------
 ;; NO-LITTERING
+
 ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
 ;; reliably, set `user-emacs-directory` before loading no-littering!
 ;(setq user-emacs-directory "~/.cache/emacs")
@@ -155,15 +167,13 @@
 ;; --------------------------------------------------
 ;; GENERAL
 (use-package general
-  :ensure t
   :init
   (general-define-key
    "C-c C-o" 'browse-url))
 
 ;; --------------------------------------------------
 ;; CRUX
-(use-package crux
-  :ensure t)
+(use-package crux)
 
 ;; --------------------------------------------------
 ;; MAGIT
@@ -178,7 +188,6 @@
 ;; Git gutter is great for giving visual feedback on changes, but it doesn't play well
 ;; with org-mode using org-indent. So I don't use it globally.
 (use-package git-gutter
-  :ensure t
   :defer t
   :hook ((markdown-mode . git-gutter-mode)
          (prog-mode . git-gutter-mode)
@@ -218,7 +227,6 @@
     :color blue)))
 
 (use-package git-gutter-fringe
-  :ensure t
   :diminish git-gutter-mode
   :after git-gutter
   :demand fringe-helper
@@ -239,26 +247,22 @@
 
 ;; --------------------------------------------------
 ;; FISH
-(use-package fish-mode
-  :ensure t)
+(use-package fish-mode)
 
 ;; --------------------------------------------------
 ;; FLYCHECK
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode))
 
 ;; --------------------------------------------------
 ;; COMPANY
 (use-package company
-  :ensure t
   :init (global-company-mode))
 
 ;; --------------------------------------------------
 ;; YASNIPPET
 ;; lsp tries to load this by default
-(use-package yasnippet
-  :ensure t)
+(use-package yasnippet)
 
 ;; --------------------------------------------------
 ;; Set scripts to executable on save.
@@ -268,19 +272,16 @@
 ;; --------------------------------------------------
 ;; PROJECTILE
 (use-package projectile-ripgrep
-  :ensure t
   :init
   (setq projectile-create-missing-test-files t))
 
 (use-package projectile
-  :ensure t
   :init (projectile-mode +1)
   :bind-keymap ("C-c p" . projectile-command-map))
 
 ;; --------------------------------------------------
 ;; VERTICO
 (use-package vertico
-  :ensure t
   :init
   (vertico-mode)
 
@@ -304,7 +305,6 @@
 ;; Multiple files can be opened at once with `find-file' if you enter a
 ;; wildcard. You may also give the `initials' completion style a try.
 (use-package orderless
-  :ensure t
   :init
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
@@ -315,13 +315,11 @@
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-  :ensure t
   :init
   (savehist-mode))
 
 ;; A few more useful configurations...
 (use-package emacs
-  :ensure t
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; Alternatively try `consult-completing-read-multiple'.
@@ -345,7 +343,6 @@
 ;; --------------------------------------------------
 ;; MARGINALIA
 (use-package marginalia
-  :ensure t
   ;; Either bind `marginalia-cycle` globally or only in the minibuffer
   :bind (("M-A" . marginalia-cycle)
          :map minibuffer-local-map
@@ -361,7 +358,6 @@
 ;; --------------------------------------------------
 ;; CONSULT
 (use-package consult
-  :ensure t
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c h" . consult-history)
@@ -482,7 +478,6 @@
 ;; PAREN HIGHLIGHTING
 (show-paren-mode t)
 (use-package rainbow-delimiters
-  :ensure t
   :hook (clojure-mode . rainbow-delimiters-mode))
 
 ;; --------------------------------------------------
@@ -496,7 +491,6 @@
 ;;   :ensure t)
 
 (use-package clojure-mode
-  :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode))
   :hook ((clojure-mode . lsp)
@@ -512,16 +506,12 @@
   (require 'flycheck-clj-kondo))
 
 ;; cider
-(use-package cider
-  :ensure t)
+(use-package cider)
 
 ;; clj-kondo
-(use-package
-  flycheck-clj-kondo
-  :ensure t)
+(use-package flycheck-clj-kondo)
 
 (use-package clojure-mode
-  :ensure t
   :config
   (require 'flycheck-clj-kondo))
 
@@ -535,7 +525,6 @@
 ;; --------------------------------------------------
 ;; LSP
 (use-package lsp-mode
-  :ensure t
   ;; :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   :custom
@@ -544,11 +533,9 @@
   :commands lsp)
 
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode)
 
 (use-package lsp-treemacs
-  :ensure t
   :commands lsp-treemacs-errors-list)
 
 ;; --------------------------------------------------
@@ -557,7 +544,6 @@
 (add-hook 'clojure-mode-hook #'lispy-mode)
 ;; (defvar lispy-compat)
 (use-package lispy
-  :ensure t
   :defer t
   :init (setq lispy-compat '(cider magit-blame-mode)))
 
@@ -589,14 +575,12 @@
 ;; --------------------------------------------------
 ;; NIX
 (use-package nix-mode
-  :ensure t
   :defer t
   :mode "\\.nix\\'")
 
 ;; --------------------------------------------------
 ;; GRAPHVIZ
 (use-package graphviz-dot-mode
-  :ensure t
   :defer t
   :config
   (setq graphviz-dot-indent-width 4))
@@ -615,7 +599,6 @@
 
 ;; edwina - https://github.com/ajgrf/edwina
 (use-package edwina
-  :ensure t
   :config
   (setq display-buffer-base-action '(display-buffer-below-selected))
   (edwina-setup-dwm-keys)
