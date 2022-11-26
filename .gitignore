@@ -3,3 +3,6 @@
 /eln-cache/
 /elpa/
 /var/
+/straight/build/
+/straight/repos/
+/straight/build-cache.el
