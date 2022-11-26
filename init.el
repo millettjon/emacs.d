@@ -26,6 +26,11 @@
                      gcs-done)))
 
 ;; --------------------------------------------------
+;; NATIVE COMP
+;; Suppress display of native comp warnings buffer.
+(customize-set-variable 'warning-minimum-level :error)
+
+;; --------------------------------------------------
 ;; USE PACKAGE
 ;; Initialize package sources
 (require 'package)
