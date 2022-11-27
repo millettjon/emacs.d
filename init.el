@@ -109,6 +109,10 @@
 		(toggle-frame-fullscreen)))))
 
 ;; --------------------------------------------------
+;; FILES
+(customize-set-variable 'global-auto-revert-mode t)
+
+;; --------------------------------------------------
 ;; FONT
 (defvar efs/default-font-size 140)
 (defvar efs/default-variable-font-size 140)
