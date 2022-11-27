@@ -603,7 +603,7 @@
 ;; ace-window
 ;; TODO M-o is bound to lispy-left-maybe
 (use-package ace-window
-  :bind (("M-o" . ace-window)))
+  :bind (("C-x o" . ace-window)))
 
 ;; edwina - https://github.com/ajgrf/edwina
 (use-package edwina
