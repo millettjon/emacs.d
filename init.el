@@ -152,6 +152,11 @@
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
 
+;; Put modeline in minibuffer
+;; Note: more or less works but not pretty like doom
+;; (use-package mini-modeline)
+;; Note: hmm for terminal, don't hide modeline since bottom window dividers don't wok
+
 ;; --------------------------------------------------
 ;; YES/NO
 (defalias 'yes-or-no-p 'y-or-n-p)
