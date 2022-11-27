@@ -131,6 +131,14 @@
   (set-face-foreground 'font-lock-comment-face "light green"))
 
 ;; --------------------------------------------------
+;; WINDOW DIVIDERS
+;; Note: the bottom divider only displays if the modeline is hidden.
+(set-face-foreground    'window-divider                      "gray25")
+;; (customize-set-variable 'window-divider-default-right-width  5)
+;; (customize-set-variable 'window-divider-default-bottom-width 5)
+(window-divider-mode-apply t)
+
+;; --------------------------------------------------
 ;; MODELINE
 
 ;; Home: https://github.com/seagle0128/doom-modeline
