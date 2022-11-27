@@ -269,13 +269,13 @@
 
 ;; --------------------------------------------------
 ;; PROJECTILE
-(use-package projectile-ripgrep
-  :init
-  (setq projectile-create-missing-test-files t))
-
 (use-package projectile
-  :init (projectile-mode +1)
-  :bind-keymap ("C-c p" . projectile-command-map))
+  :init
+  (projectile-mode +1)
+  (setq projectile-create-missing-test-files t)
+
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
 
 ;; --------------------------------------------------
 ;; VERTICO
@@ -473,52 +473,36 @@
 )
 
 ;; --------------------------------------------------
-;; PAREN HIGHLIGHTING
-(show-paren-mode t)
-(use-package rainbow-delimiters
-  :hook (clojure-mode . rainbow-delimiters-mode))
-
-;; --------------------------------------------------
 ;; CLOJURE
 ;; TODO http://ccann.github.io/2015/10/18/cider.html
 ;; TODO https://github.com/howardabrams/dot-files/blob/master/emacs-clojure.org
 ;; TODO https://github.com/mpenet/clojure-snippets
 
-;; TODO package not found
-;; (use-package rainbow-delimiters-mode
-;;   :ensure t)
+;; clj-kondo
+(use-package flycheck-clj-kondo)
 
 (use-package clojure-mode
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode))
   :hook ((clojure-mode . lsp)
 	 (clojure-mode . yas-minor-mode))
-
-  ;; :init
-  ;; (add-hook 'clojure-mode-hook #'yas-minor-mode)
-
-  ;;  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode) ; ? is this too intesive?
-  ;;  (add-hook 'clojure-mode-hook #'eldoc-mode)  ; shows argument list of function you are calling; ? does lsp do it?
-  ;;  (add-hook 'clojure-mode-hook #'idle-highlight-mode)
   :config
   (require 'flycheck-clj-kondo))
 
 ;; cider
 (use-package cider)
 
-;; clj-kondo
-(use-package flycheck-clj-kondo)
-
-(use-package clojure-mode
-  :config
-  (require 'flycheck-clj-kondo))
+;; paren highlighting
+(show-paren-mode t)
+(use-package rainbow-delimiters
+  :hook (clojure-mode . rainbow-delimiters-mode))
 
 ;; --------------------------------------------------
 ;; BABASHKA
 (projectile-register-project-type
- 'babashka '("bb.edn")
+ 'babashka     '("bb.edn")
  :project-file "bb.edn"
- :test-suffix "_test")
+ :test-suffix  "_test")
 
 ;; --------------------------------------------------
 ;; LSP
@@ -577,15 +561,6 @@
   :mode "\\.nix\\'")
 
 ;; --------------------------------------------------
-;; GRAPHVIZ
-(use-package graphviz-dot-mode
-  :defer t
-  :config
-  (setq graphviz-dot-indent-width 4))
-
-(use-package company-graphviz-dot)
-
-;; --------------------------------------------------
 ;; ORG MODE
 (add-hook 'org-mode-hook
 	  (lambda ()
@@ -593,7 +568,23 @@
 	     'org-babel-load-languages '((dot . t)))))
 
 ;; --------------------------------------------------
+;; RIPGREP
+
+;; - fast
+;; - buttons to configure
+;; - no syntax highlighting
+;; - replaced my buffer with search results WTF
+;; (use-package deadgrep)
+
+;; --------------------------------------------------
 ;; WINDOW MANAGEMENT
+
+(use-package free-keys)
+
+;; ace-window
+;; TODO M-o is bound to lispy-left-maybe
+(use-package ace-window
+  :bind (("M-o" . ace-window)))
 
 ;; edwina - https://github.com/ajgrf/edwina
 (use-package edwina
