@@ -151,19 +151,21 @@
 
 ;; --------------------------------------------------
 ;; THEME
-;; Ref: https://github.com/doomemacs/themes
+;; Note: Fork is only useful if you actually push changes to upstream.
+;;       - when freezing, it insists on pushing changes to upstream.
+;; TODO get ssh protocol working
 (use-package doom-themes
+  :straight (:type git :host github :repo "millettjon/doom-themes") ;:protocol ssh)
   :init
-  (load-theme 'doom-palenight t)
-  (set-face-foreground 'font-lock-string-face  "yellow3")
-  (set-face-foreground 'font-lock-comment-face "light green"))
+  (load-theme 'doom-palenight t))
 
 ;; --------------------------------------------------
 ;; WINDOW DIVIDERS
 ;; Note: the bottom divider only displays if the modeline is hidden.
-(set-face-foreground    'window-divider                      "gray25")
-;; (customize-set-variable 'window-divider-default-right-width  5)
-;; (customize-set-variable 'window-divider-default-bottom-width 5)
+(comment
+ (customize-set-variable 'window-divider-default-right-width  5)
+ (customize-set-variable 'window-divider-default-bottom-width 5))
+(set-face-foreground 'window-divider "gray25")
 (window-divider-mode-apply t)
 
 ;; --------------------------------------------------
