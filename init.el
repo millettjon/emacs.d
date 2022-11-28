@@ -3,6 +3,12 @@
 ;;; Code:
 
 ;; --------------------------------------------------
+;; UTIL
+(defmacro comment (&rest body)
+  "Comment out one or more s-expressions."
+  nil)
+
+;; --------------------------------------------------
 ;; GARBAGE COLLECTION
 ;; Minimize garbage collection during startup
 (setq gc-cons-threshold most-positive-fixnum)
