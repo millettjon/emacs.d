@@ -97,12 +97,34 @@
 
 ;; --------------------------------------------------
 ;; FRAME
-;; Set frame transparency
-;; Make frame transparency overridable
-;; (defvar efs/frame-transparency '(90 . 90))
-(defvar efs/frame-transparency '(100 . 100))
-(set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
-(add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
+
+(comment
+ ;; Set transparency for the current frame.
+ (set-frame-parameter nil 'alpha            100)
+ (set-frame-parameter nil 'alpha-background 100)
+
+ ;; Set transparency for creating new frames.
+ (add-to-list 'default-frame-alist '(alpha            . 100))
+ (add-to-list 'default-frame-alist '(alpha-background . 100)))
+
+;; Ref: https://kristofferbalintona.me/posts/202206071000/
+;; Note: 11/27/200 alpha-background not suppored on my linux laptop
+;; (defun kb/toggle-window-transparency ()
+;;   "Toggle transparency."
+;;   (interactive)
+;;   (let ((alpha-transparency 75))
+;;     (pcase (frame-parameter nil 'alpha-background)
+;;       (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
+;;       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
+
+(defun jam/toggle-window-transparency ()
+  "Toggle transparency."
+  (interactive)
+  (let ((alpha (cl-case (frame-parameter nil 'alpha)
+		 (100 75)
+		 (75 100)
+		 (otherwise 75))))
+    (set-frame-parameter nil 'alpha alpha)))
 
 ;; Start window in full screen mode.
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
